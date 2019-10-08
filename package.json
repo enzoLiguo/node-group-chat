@@ -4,13 +4,21 @@
   "description": "A simple group chat built using Node.js and Socket.io",
   "main": "index.js",
   "scripts": {
+    "start":"nodemon ./index.js localhost 8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
+  "engines": {
+    "node":"12.10.0",
+    "npm": "6.10.3"
+  },
+  
   "author": "Diky Hadna",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "crypt": "0.0.2",
     "dialogflow": "^0.12.0",
     "ejs": "^2.6.1",
     "express": "^4.17.1",
@@ -26,6 +34,8 @@
     "mongodb": "^3.3.2",
     "nodemon": "^1.19.2",
     "open": "^6.4.0",
+    "pg": "^7.12.1",
+    "querystring": "^0.2.0",
     "rate-limiter-flexible": "^1.1.1",
     "redis": "^2.8.0",
     "redis-server": "^1.2.2",

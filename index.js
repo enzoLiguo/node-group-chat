@@ -36,6 +36,7 @@ const KEY ="secret";
 
 //Module per criptare
 const bcrypt = require('bcryptjs');
+const crypt = require('crypt');
 const saltRounds = 10;
 
 //Module HTTPS
@@ -48,6 +49,15 @@ var options = {
   cert: cert
 };
 
+//Connecting to PostgreSQL Database
+const {Client} = require('pg');
+const connectionString = 'postgres://enzoLiguo:vincenzo@localhost:5432/Users';
+const clientDB = new Client({
+  connectionString:connectionString
+});
+clientDB.connect();
+
+const querystring = require('querystring');
 // configure a JWT auth client for authentication Google
 let jwtClient = new google.auth.JWT (
     privatekey.client_email,
@@ -102,8 +112,29 @@ const createAccountLimiter = rateLimit({
            app.get('/register', createAccountLimiter, function(req,res){
             res.render('register.ejs')
           });
+          
 
-          app.post('/registerToDB', urlencoded,function(req,res){
+          app.post('/registerToDB',urlencoded, function(req,res){
+            bcrypt.hash(req.body.pass, saltRounds, function(err,hash){
+              var myObj = new Array();
+              myObj = [req.body.name,  hash];
+              console.log(myObj);
+              const text='INSERT INTO utenti VALUES($1,$2)'
+              try{
+                
+                    clientDB.query(text, myObj, function(err,ress){
+                    if (err) {
+                      console.log(err.stack);
+                    }
+                    else console.log("result " + ress); 
+                  });  
+              }catch ( e){
+                console.log(e);
+              }
+            });
+          })
+          
+          /*app.post('/registerToDB', urlencoded,function(req,res){
             MongoClient.connect(url, function(err, db) {
               var dbo = db.db('Chat');
               bcrypt.hash(req.body.pass, saltRounds, function(err,hash){
@@ -116,10 +147,39 @@ const createAccountLimiter = rateLimit({
              res.render('iniziale.ejs');
           });
         });
+        */
 
-          // app.get('/inizio', createAccountLimiter, function(req,res){
-            //console.log('Sono qui')
-           app.post('/demo',urlencodedParser,function(req,res){
+         app.post('/demo', urlencodedParser, function(req,res){
+
+            const sql = 'SELECT utenti.password FROM utenti WHERE username = $1';
+            const values = [req.body.name];
+            
+            clientDB.query(sql,values, function(err,ress){
+              const psw = ress.rows[0].password;
+              console.log(ress.rows[0].password);
+
+              bcrypt.compare(req.body.pass, psw, function(err, result){
+                if(result == true) {
+                  const token = jwt.sign({
+                    uname: req.body.name,
+                    pass: req.body.pass
+                  }, KEY, {
+                    expiresIn: "1h"
+                  })
+                 res.render('index.ejs')
+                 console.log(token)
+               } else {
+                 res.render('iniziale.ejs')
+               }
+                })
+            })
+          })
+          
+
+
+            
+
+          /*app.post('/demo',urlencodedParser,function(req,res){
             MongoClient.connect(url, function(err, db) {
               var dbo = db.db('Chat');
               dbo.collection('user').findOne({ Nome: req.body.name}, function(err, user) {
@@ -138,17 +198,18 @@ const createAccountLimiter = rateLimit({
                res.render('index.ejs')
                console.log(token)
              } else {
-               res.send("Password Incorrect");
+               res.render('iniziale.ejs')
              }
             })
           }
           });
           });
           });
-      //});
-           
+      */
+          
         io.sockets.on('connection',function(socket) {
             socket.on('username', function(username) {
+                
                 socket.username = username;
                 socket.emit('is_online', '🔵 <i>' + socket.username + ' è online..</i>');
             });
@@ -167,6 +228,7 @@ const createAccountLimiter = rateLimit({
             async function runSample(projectId,message) {
                 // A unique identifier for the given session
                 const sessionId = uuid.v4();
+                const idUser = Math.round(100*Math.random());
               
                 // Create a new session
                 const sessionClient = new dialogflow.SessionsClient({
@@ -197,6 +259,24 @@ const createAccountLimiter = rateLimit({
                 } else {
                   console.log(`  No intent matched.`);
                 }
+
+
+                //To save the chat in the database
+                MongoClient.connect(url, function(err, db) {
+                  var dbo = db.db('Chat');
+                    var myObj = {Id_conversation: sessionId, User_message: result.queryText, Server_response:result.fulfillmentText, Intent: result.intent.displayName};
+                    dbo.collection('personal_chat').insertOne(myObj, function(err,res){
+                         if(err) throw err;
+                         console.log("Chat inserted")
+                    })
+                
+              });
+
               }
+              
+
+              
+              
+
         });
       
