@@ -23,12 +23,17 @@ const uuid = require('uuid');
 const helmet = require('helmet');
 const rateLimit = require("express-rate-limit");
 
+
+//Module for file .env
+const dotenv = require('dotenv');
+dotenv.config();
+
 //Var per mongodb e passaggio parametri
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended:false});
 var urlencoded = bodyParser.urlencoded({extended:false});
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/';
+var url = 'mongodb://'+process.env.DB_MONGO+':'+process.env.DB_MONGOPORT+'/';
 
 //Module JSON Web Token
 const jwt = require('jsonwebtoken');
@@ -39,23 +44,40 @@ const bcrypt = require('bcryptjs');
 const crypt = require('crypt');
 const saltRounds = 10;
 
+/*
 //Module HTTPS
-const fs = require('fs');
-const https = require('https');
+var fs = require('fs');
+var https = require('https');
 var key = fs.readFileSync('chiave.pem');
 var cert = fs.readFileSync('certificato.pem');
 var options = {
   key: key,
   cert: cert
 };
-
-//Connecting to PostgreSQL Database
+*/
+/*
 const {Client} = require('pg');
-const connectionString = 'postgres://enzoLiguo:vincenzo@localhost:5432/Users';
-const clientDB = new Client({
+var connectionString = 'postgres://enzoLiguo:vincenzo@localhost:5432/Users';
+var clientDB = new Client({
   connectionString:connectionString
 });
 clientDB.connect();
+*/
+
+
+
+//Connecting to PostgreSQL Database
+const {Client} = require('pg');
+var connectionString = 'postgres://'+ process.env.DB_USER +':'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+':'+process.env.DB_PORT+'/'+process.env.DB_DATABASE+'';
+var clientDB = new Client({
+  connectionString: connectionString
+});
+clientDB.connect();
+
+
+
+
+
 
 const querystring = require('querystring');
 // configure a JWT auth client for authentication Google
@@ -79,15 +101,16 @@ const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
   max: 3, // start blocking after 5 requests
   message:
-    "Troppi account creati dallo stesso indirizzo IP, prova fra un'ora"
+    "Too many accounts created from the same IP address, please try the time"
 });
 
 
     //Helmet module for prevent XSS Attach
     app.use(helmet())
+    var port = process.env.PORT || 8080;
 
-    const server = http.listen(8080,function(){
-      console.log ("Server su porta 8080")
+    const server = http.listen(port,function(){
+      console.log ("Server listening on port " + port);
     })
 
 // we will pass our 'app' to 'https' server
@@ -106,11 +129,11 @@ const createAccountLimiter = rateLimit({
 
 
            app.get('/login', createAccountLimiter, function(req,res){
-             res.render('iniziale.ejs')
+             res.render('iniziale.ejs');
            });
 
            app.get('/register', createAccountLimiter, function(req,res){
-            res.render('register.ejs')
+            res.render('register.ejs');
           });
           
 
@@ -119,7 +142,7 @@ const createAccountLimiter = rateLimit({
               var myObj = new Array();
               myObj = [req.body.name,  hash];
               console.log(myObj);
-              const text='INSERT INTO utenti VALUES($1,$2)'
+              const text='INSERT INTO utenti VALUES($1,$2)';
               try{
                 
                     clientDB.query(text, myObj, function(err,ress){
@@ -151,29 +174,29 @@ const createAccountLimiter = rateLimit({
 
          app.post('/demo', urlencodedParser, function(req,res){
 
-            const sql = 'SELECT utenti.password FROM utenti WHERE username = $1';
-            const values = [req.body.name];
+            var sql = 'SELECT utenti.password FROM utenti WHERE username = $1';
+            var values = [req.body.name];
             
             clientDB.query(sql,values, function(err,ress){
-              const psw = ress.rows[0].password;
+              var psw = ress.rows[0].password;
               console.log(ress.rows[0].password);
 
               bcrypt.compare(req.body.pass, psw, function(err, result){
                 if(result == true) {
-                  const token = jwt.sign({
+                  var token = jwt.sign({
                     uname: req.body.name,
                     pass: req.body.pass
                   }, KEY, {
                     expiresIn: "1h"
-                  })
-                 res.render('index.ejs')
-                 console.log(token)
+                  });
+                 res.render('index.ejs');
+                 console.log(token);
                } else {
-                 res.render('iniziale.ejs')
+                 res.render('iniziale.ejs');
                }
-                })
-            })
-          })
+                });
+            });
+          });
           
 
 
@@ -263,9 +286,9 @@ const createAccountLimiter = rateLimit({
 
                 //To save the chat in the database
                 MongoClient.connect(url, function(err, db) {
-                  var dbo = db.db('Chat');
+                  var dbo = db.db(process.env.DB_SQL);
                     var myObj = {Id_conversation: sessionId, User_message: result.queryText, Server_response:result.fulfillmentText, Intent: result.intent.displayName};
-                    dbo.collection('personal_chat').insertOne(myObj, function(err,res){
+                    dbo.collection(process.env.DB_COLLECTION).insertOne(myObj, function(err,res){
                          if(err) throw err;
                          console.log("Chat inserted")
                     })
