@@ -136,7 +136,7 @@ const createAccountLimiter = rateLimit({
             res.render('register.ejs');
           });
           
-
+          // Register to PostgreSQL
           app.post('/registerToDB',urlencoded, function(req,res){
             bcrypt.hash(req.body.pass, saltRounds, function(err,hash){
               var myObj = new Array();
