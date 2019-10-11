@@ -33,7 +33,8 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended:false});
 var urlencoded = bodyParser.urlencoded({extended:false});
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://'+process.env.DB_MONGO+':'+process.env.DB_MONGOPORT+'/';
+//var url = 'mongodb://'+process.env.DB_MONGO+':'+process.env.DB_MONGOPORT+'/';
+var url = process.env.NOSQL_URL;
 
 //Module JSON Web Token
 const jwt = require('jsonwebtoken');
