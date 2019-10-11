@@ -245,12 +245,13 @@ const createAccountLimiter = rateLimit({
         
             socket.on('chat_message', function(message) {
                 socket.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-                  runSample('newagent-spgvri',message);     
+                user = socket.username;
+                  runSample('newagent-spgvri',message,user);     
             });
         
         
             //Call Dialogflow API
-            async function runSample(projectId,message) {
+            async function runSample(projectId,message,user) {
                 // A unique identifier for the given session
                 const sessionId = uuid.v4();
                 const idUser = Math.round(100*Math.random());
@@ -289,7 +290,7 @@ const createAccountLimiter = rateLimit({
                 //To save the chat in the database
                 MongoClient.connect(url, function(err, db) {
                   var dbo = db.db(process.env.DB_SQL);
-                    var myObj = {Username: req.body.name, Id_conversation: sessionId, User_message: result.queryText, Server_response:result.fulfillmentText, Intent: result.intent.displayName};
+                    var myObj = {Username: user, Id_conversation: sessionId, User_message: result.queryText, Server_response:result.fulfillmentText, Intent: result.intent.displayName};
                     dbo.collection(process.env.DB_COLLECTION).insertOne(myObj, function(err,res){
                          if(err) throw err;
                          console.log("Chat inserted")
