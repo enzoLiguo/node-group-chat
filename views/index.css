@@ -17,6 +17,11 @@
     margin-left: 60px;
 }
 
+.chat-img {
+    float: right;
+    width: 11%;
+  }
+
 .chat li.right .chat-body
 {
     margin-right: 60px;
