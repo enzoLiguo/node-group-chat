@@ -142,7 +142,7 @@ const createAccountLimiter = rateLimit({
               var myObj = new Array();
               myObj = [req.body.name,  hash];
               console.log(myObj);
-              const text='INSERT INTO utenti VALUES($1,$2)';
+              const text='INSERT INTO '+ process.env.DB_DATABASE+' VALUES($1,$2)';
               try{
                 
                     clientDB.query(text, myObj, function(err,ress){
