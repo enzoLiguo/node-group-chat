@@ -246,12 +246,12 @@ const createAccountLimiter = rateLimit({
             socket.on('chat_message', function(message) {
                 socket.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
                 user = socket.username;
-                  runSample('newagent-spgvri',message,user);     
+                  runSample('newagent-spgvri',message);     
             });
         
         
             //Call Dialogflow API
-            async function runSample(projectId,message,user) {
+            async function runSample(projectId,message) {
                 // A unique identifier for the given session
                 const sessionId = uuid.v4();
                 const idUser = Math.round(100*Math.random());
