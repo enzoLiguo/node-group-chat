@@ -257,7 +257,7 @@ const createAccountLimiter = rateLimit({
               
                 // Create a new session
                 const sessionClient = new dialogflow.SessionsClient({
-                    keyFilename:"C:/Users/Vincenzo/Desktop/ProgettiNode/node-group-chat/auth.json"
+                    keyFilename:"./auth.json"
                 });
                 const sessionPath = sessionClient.sessionPath(projectId, sessionId);
               
