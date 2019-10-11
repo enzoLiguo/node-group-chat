@@ -68,9 +68,9 @@
 
             // append the chat text message
             socket.on('chat_message', function(msg){
-              if(msg.equals('<strong>Server:'))
-                $('#messages_right').append($('<li>').html(msg));
-              else $('#messages_left').append($('<li>').html(msg));
+              if(msg.indexOf('Server:')>-1){
+                $('#messages_right').append($('<li>').html(msg));}
+              else {$('#messages_left').append($('<li>').html(msg));}
             });
 
             // append text if someone is online
