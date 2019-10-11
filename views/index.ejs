@@ -27,10 +27,13 @@
                   <div class="panel-collapse collapse" id="collapseOne">
                       <div class="panel-body">
                           <li class="left clearfix">
-                             <div class="chat-body clearfix" id ="messages"></div>
-                                
-                      </div>
+                             <div class="chat-body clearfix" id ="messages_left"></div>
                           </li>
+
+                          <li class="right clearfix">
+                              <div class="chat-body clearfix" id="messages_right"></div>
+                          </li>
+                  </div>
                       </div>
                       <div class="panel-footer">
                           <div class="input-group">
@@ -65,12 +68,13 @@
 
             // append the chat text message
             socket.on('chat_message', function(msg){
+              alert (msg)
                 $('#messages').append($('<li>').html(msg));
             });
 
             // append text if someone is online
             socket.on('is_online', function(username) {
-                $('#messages').append($('<li>').html(username));
+                $('#messages_left').append($('<li>').html(username));
             });
 
             // ask username
