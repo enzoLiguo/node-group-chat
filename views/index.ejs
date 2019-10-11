@@ -5,90 +5,46 @@
 
     <script src="../../socket.io/socket.io.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   
     <link href="index.css" rel="stylesheet" type="text/css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-   <script>$(document).on('click', '.panel-heading span.icon_minim', function (e) {
-      var $this = $(this);
-      if (!$this.hasClass('panel-collapsed')) {
-          $this.parents('.panel').find('.panel-body').slideUp();
-          $this.addClass('panel-collapsed');
-          $this.removeClass('glyphicon-minus').addClass('glyphicon-plus');
-      } else {
-          $this.parents('.panel').find('.panel-body').slideDown();
-          $this.removeClass('panel-collapsed');
-          $this.removeClass('glyphicon-plus').addClass('glyphicon-minus');
-      }
-  });
-  $(document).on('focus', '.panel-footer input.chat_input', function (e) {
-      var $this = $(this);
-      if ($('#minim_chat_window').hasClass('panel-collapsed')) {
-          $this.parents('.panel').find('.panel-body').slideDown();
-          $('#minim_chat_window').removeClass('panel-collapsed');
-          $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-      }
-  });
-  $(document).on('click', '#new_chat', function (e) {
-      var size = $( ".chat-window:last-child" ).css("margin-left");
-       size_total = parseInt(size) + 400;
-      alert(size_total);
-      var clone = $( "#chat_window_1" ).clone().appendTo( ".container" );
-      clone.css("margin-left", size_total);
-  });
-  $(document).on('click', '.icon_close', function (e) {
-      //$(this).parent().parent().parent().parent().remove();
-      $( "#chat_window_1" ).remove();
-  });
-  </script>
+    
   </head>
   <body>
       <div class="container">
-          <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:10px;">
-              <div class="col-xs-12 col-md-12">
-                <div class="panel panel-default">
-                      <div class="panel-heading top-bar">
-                          <div class="col-md-8 col-xs-8">
-                              <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> SI Chat</h3>
-                          </div>
-                          <div class="col-md-4 col-xs-4" style="text-align: right;">
-                              <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
-                              <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+          <div class="row">
+              <div class="col-md-5">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading" id="accordion">
+                          <span class="glyphicon glyphicon-comment"></span> Chat
+                          <div class="btn-group pull-right">
+                              <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                  <span class="glyphicon glyphicon-chevron-down"></span>
+                              </a>
                           </div>
                       </div>
-                      <div class="panel-body msg_container_base">
-                          <div class="row msg_container base_sent">
-                              <div class="col-md-10 col-xs-10">
-                                  <ul id="messages"></ul>
-                              </div>
-                              <div class="col-md-2 col-xs-2 avatar">
-                                  <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
-                              </div>
-                          </div>
+                  <div class="panel-collapse collapse" id="collapseOne">
+                      <div class="panel-body">
+                          <ul class="chat">
+                              <li class="left clearfix"><span class="chat-img pull-left">
+                                  <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                              </span>
+                                  <div class="chat-body clearfix">
+                                      <ul id="messages"></ul> 
+                                  </div>
+                              </li>
+                          </ul>
                       </div>
                       <div class="panel-footer">
                           <div class="input-group">
+                              <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
                               <form action="/" method="POST" id="chatForm">
                                 <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." /><button id="bottone">Send</button>
                               </form>
                           </div>
                       </div>
+                  </div>
+                  </div>
               </div>
-              </div>
-          </div>
-          
-          <div class="btn-group dropup">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-cog"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                  <li><a href="#" id="new_chat"><span class="glyphicon glyphicon-plus"></span> Novo</a></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-list"></span> Ver outras</a></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-remove"></span> Fechar Tudo</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-eye-close"></span> Invisivel</a></li>
-              </ul>
           </div>
       </div>
     <script>
