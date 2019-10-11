@@ -5,21 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script>
-      $("#reg").click(function(){
-     var uname  = $("#uname").val();
-     var upass = $("#upass").val();
-     var regData ={'name': uname,'pass':upass};
-     $.ajax({
-         type : 'POST',
-         url : '/registerToDB',
-         data : regData,
-         success: function(data){
-         $("#mainDiv").html(data);
-         }
-       });
-      });
-    </script>
+    
   </head>
   <body>
       <div  id = "mainDiv">
@@ -38,6 +24,20 @@
     
   </div>
     
-
+  <script>
+    $("#reg").click(function(){
+   var uname  = $("#uname").val();
+   var upass = $("#upass").val();
+   var regData ={'name': uname,'pass':upass};
+   $.ajax({
+       type : 'POST',
+       url : '/registerToDB',
+       data : regData,
+       success: function(data){
+       $("#mainDiv").html(data);
+       }
+     });
+    });
+  </script>
   </body>
 </html>
