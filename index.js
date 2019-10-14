@@ -110,7 +110,7 @@ const createAccountLimiter = rateLimit({
     //Helmet module for prevent XSS Attach
     app.use(helmet());
 
-    app.use('/assets', express.static('assets'))
+    app.use('/assets', express.static('assets'));
     var port = process.env.PORT || 8080;
 
     const server = http.listen(port,function(){
