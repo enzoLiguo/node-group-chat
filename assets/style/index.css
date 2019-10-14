@@ -242,8 +242,8 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.137);
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 0.404);
     -webkit-overflow-scrolling: touch;
 }
 
