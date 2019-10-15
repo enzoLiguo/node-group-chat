@@ -314,7 +314,3 @@
 #Smallchat .Input-emoji .Input_button-emoji .Icon path, #Smallchat .Input_button:hover .Icon path {
     fill: #2c2c46;
 }
-
-.chat_items li:nth-child(2n + 1) {
-    float: right;
-}
