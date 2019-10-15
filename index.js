@@ -280,7 +280,7 @@ const createAccountLimiter = rateLimit({
                 console.log('Detected intent');
                 const result = responses[0].queryResult;
                 console.log(`  Query: ${result.queryText}`);
-                socket.emit('chat_message', '<strong>' + "Server: " + '</strong>:' + result.fulfillmentText);
+                socket.emit('chat_message', result.fulfillmentText + '<strong>' + ":Server" + '</strong>:');
                 console.log(`  Response: ${result.fulfillmentText}`);
                 if (result.intent) {
                   console.log(`  Intent: ${result.intent.displayName}`);
