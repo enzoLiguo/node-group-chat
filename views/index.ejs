@@ -33,6 +33,15 @@
                           <li class="right clearfix" style="list-style: none;">
                               <div class=" pull-right chat-body clearfix" id="messages_right"></div>
                           </li>
+
+                          <li class="left clearfix" style="list-style: none;">
+                            <div class=" pull-left chat-body clearfix" id ="messages_left1"></div>
+                          </li>
+                                
+                        
+                      <li class="right clearfix" style="list-style: none;">
+                          <div class=" pull-right chat-body clearfix" id="messages_right1"></div>
+                      </li>
                           
                         </div>
                       </div>
@@ -83,7 +92,13 @@
               if(msg.indexOf(':Server')>-1){
                 $('#messages_right').append($('<li>').html(msg));}
               else {$('#messages_left').append($('<li>').html(msg));}
-            });
+             
+                if(msg.indexOf('come stai')>-1){
+                  $('#messages_left1').append($('<li>').html(msg));
+                    if(msg.indexOf(':Server')>-1){
+                $('#messages_right1').append($('<li>').html(msg));}
+                }
+              });
 
             // append text if someone is online
             socket.on('is_online', function(username) {
