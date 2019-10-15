@@ -315,6 +315,6 @@
     fill: #2c2c46;
 }
 
-li:nth-child(2n + 1) {
+.chat_items li:nth-child(2n + 1) {
     float: right;
 }
