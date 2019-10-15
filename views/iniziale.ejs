@@ -4,10 +4,6 @@
     <title>SI Chat</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="./assets/style/iniziale.css" rel="stylesheet" type="text/css">
     
   </head>
   <body>
@@ -18,14 +14,12 @@
               <label>Username</label>
               <input type="text" id="uname" class="form-control" name="">
               <label>Password</label>
-              <input type="password" id="upass" class="form-control" name="">
-              <input type="submit" value="Login" class="form-control btn btn-success " id="submit" >
+              <input type="password" id="upass" class="form-control" name=""><br/>
+              <button type="submit" class="btn btn-primary" id="submit">Login</button>
             </form>
           </div>
         </div>
-      <div  id = "mainDiv">
-    
-
+      
   <script>
     $("#submit").click(function(){
    var uname  = $("#uname").val();
