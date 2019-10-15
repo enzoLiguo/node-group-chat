@@ -77,7 +77,7 @@
 
             // append the chat text message
             socket.on('chat_message', function(msg){
-              if(msg.indexOf('Server:')>-1){
+              if(msg.indexOf(':Server')>-1){
                 $('#messages_right').append($('<li>').html(msg));}
               else {$('#messages_left').append($('<li>').html(msg));}
             });
