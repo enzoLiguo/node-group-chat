@@ -36,7 +36,7 @@
     "pg": "^7.12.1",
     "querystring": "^0.2.0",
     "rate-limiter-flexible": "^1.1.1",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "redis-server": "^1.2.2",
     "server-destroy": "^1.0.1",
     "socket.io": "^2.2.0",
